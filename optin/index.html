@@ -127,7 +127,7 @@
 
   /* ====== CONFIG (menjaj samo ovo) ====== */
   var NDOPTIN = {
-    endpoint: '',                 // POST URL (JSON). Prazno = demo rezim (bez slanja).
+    endpoint: 'https://hook.eu1.make.com/arr1eyfon5t2w7o9yag5992l4qyjiv91',   // POST URL (JSON). Prazno = demo rezim (bez slanja).
     redirectUrl: '',              // Prazno = prikazi success poruku. Inace redirect posle uspeha.
     buttonText: 'Prijavi se  →',
     buttonSending: 'Šaljem...',
@@ -191,8 +191,14 @@
     var bad = names.filter(function (n) { return !check(n); });
     if (bad.length) { inputOf(bad[0]).focus(); return; }
 
+    // Validacija garantuje bar jedan razmak, pa je split uvek na 2 dela.
+    // Prva rec = ime, sve ostalo = prezime (npr. "Ana Marija Petrović" -> "Ana" + "Marija Petrović").
+    var pun = inputOf('ime').value.trim().replace(/\s+/g, ' ');
+    var razmak = pun.indexOf(' ');
+
     var data = {
-      ime: inputOf('ime').value.trim(),
+      ime: pun.slice(0, razmak),
+      prezime: pun.slice(razmak + 1),
       email: inputOf('email').value.trim(),
       telefon: inputOf('telefon').value.trim()
     };
